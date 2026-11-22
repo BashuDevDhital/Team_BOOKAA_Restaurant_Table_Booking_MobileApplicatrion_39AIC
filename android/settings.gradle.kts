@@ -1,3 +1,20 @@
+// Workaround for AGP AndroidLocationsException when ANDROID_PREFS_ROOT env var is defined on Windows
+try {
+    val peClass = Class.forName("java.lang.ProcessEnvironment")
+    val envField = peClass.getDeclaredField("theEnvironment")
+    envField.isAccessible = true
+    @Suppress("UNCHECKED_CAST")
+    val env = envField.get(null) as? MutableMap<String, String>
+    env?.remove("ANDROID_PREFS_ROOT")
+
+    val ciEnvField = peClass.getDeclaredField("theCaseInsensitiveEnvironment")
+    ciEnvField.isAccessible = true
+    @Suppress("UNCHECKED_CAST")
+    val ciEnv = ciEnvField.get(null) as? MutableMap<String, String>
+    ciEnv?.remove("ANDROID_PREFS_ROOT")
+} catch (_: Exception) {
+}
+
 pluginManagement {
     val flutterSdkPath =
         run {
