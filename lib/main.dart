@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'app_theme.dart';
-import 'auth_screens.dart';
+import 'view/Authenciation/Widgets/app_theme.dart';
+import 'view/Authenciation/Dashboard/auth_screens.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
