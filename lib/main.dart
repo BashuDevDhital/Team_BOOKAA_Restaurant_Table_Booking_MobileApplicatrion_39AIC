@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'view/Authenciation/Widgets/app_theme.dart';
 import 'view/Authenciation/Dashboard/auth_screens.dart';
+import 'view/Authenciation/Widgets/app_theme.dart';
 
 void main() {
-  WidgetsFlutterBinding.ensureInitialized();
   runApp(const BooKaaApp());
 }
 
