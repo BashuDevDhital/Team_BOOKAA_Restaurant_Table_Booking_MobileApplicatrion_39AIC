@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../Widgets/app_theme.dart';
+import 'ai_recommendation_screen.dart';
 
 // =============================================================================
 // RESTAURANT DATA MODEL
@@ -487,11 +488,10 @@ class _AiBannerCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        // TODO: Open AI recommendation screen
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('BOO-KAA AI Recommendations coming soon!'),
-            backgroundColor: AppColors.darkCard,
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const AiRecommendationScreen(),
           ),
         );
       },
