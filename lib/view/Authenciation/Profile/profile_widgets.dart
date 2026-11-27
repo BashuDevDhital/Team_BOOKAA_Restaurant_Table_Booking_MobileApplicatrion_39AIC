@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../Widgets/app_theme.dart';
@@ -28,11 +29,12 @@ class SectionHeader extends StatelessWidget {
   }
 }
 
-/// ProfileHeaderCard: Large initials avatar with camera badge, user name, email, verified chip, and edit button.
+/// ProfileHeaderCard: Large initials or photo avatar with camera badge, user name, email, verified chip, and edit button.
 class ProfileHeaderCard extends StatelessWidget {
   final String name;
   final String email;
   final String memberSince;
+  final File? photoFile;
   final VoidCallback onEditPressed;
   final VoidCallback onAvatarPressed;
 
@@ -41,6 +43,7 @@ class ProfileHeaderCard extends StatelessWidget {
     required this.name,
     required this.email,
     required this.memberSince,
+    this.photoFile,
     required this.onEditPressed,
     required this.onAvatarPressed,
   });
@@ -89,15 +92,23 @@ class ProfileHeaderCard extends StatelessWidget {
                           width: 2,
                         ),
                       ),
+                      clipBehavior: Clip.antiAlias,
                       alignment: Alignment.center,
-                      child: Text(
-                        _initials,
-                        style: AppTheme.dmSans(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          color: AppColors.burntOrange,
-                        ),
-                      ),
+                      child: photoFile != null
+                          ? Image.file(
+                              photoFile!,
+                              width: 76,
+                              height: 76,
+                              fit: BoxFit.cover,
+                            )
+                          : Text(
+                              _initials,
+                              style: AppTheme.dmSans(
+                                fontSize: 26,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.burntOrange,
+                              ),
+                            ),
                     ),
                   ),
                   Positioned(

@@ -1,8 +1,13 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../Dashboard/auth_screens.dart';
 import '../Widgets/app_theme.dart';
+import 'avatar_picker_sheet.dart';
+import 'bookings_page.dart';
 import 'profile_widgets.dart';
+import 'reviews_page.dart';
+import 'saved_page.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -16,11 +21,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
   String _userName = 'Aayush Shrestha';
   String _userEmail = 'aayush.shrestha@example.com';
   final String _memberSince = 'Member since 2026';
+  File? _profilePhotoFile;
 
-  // Stats State
-  final int _bookingsCount = 12;
-  final int _savedCount = 5;
-  final int _reviewsCount = 3;
+  // Initial Sample Bookings (10 items)
+  late List<BookingItem> _sampleBookings;
+
+  // Initial Sample Saved Restaurants (5 items)
+  late List<SavedRestaurant> _sampleSaved;
+
+  // Initial Sample Reviews (3 items)
+  late List<ReviewItem> _sampleReviews;
 
   // Preferences State
   bool _isVegetarianFriendly = false;
@@ -36,6 +46,204 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   // General State
   String _selectedLanguage = 'English';
+
+  @override
+  void initState() {
+    super.initState();
+    _initData();
+  }
+
+  void _initData() {
+    _sampleBookings = [
+      BookingItem(
+        id: '1',
+        restaurantName: 'The Workshop Eatery',
+        location: 'Jhamsikhet, Lalitpur',
+        bookingId: 'BK-2407',
+        date: 'Nov 28, 2026',
+        time: '7:00 PM',
+        guests: 4,
+        status: BookingStatus.upcoming,
+      ),
+      BookingItem(
+        id: '2',
+        restaurantName: 'Toran Dining',
+        location: 'Dwarika\'s, Battisputali',
+        bookingId: 'BK-2408',
+        date: 'Dec 02, 2026',
+        time: '8:15 PM',
+        guests: 2,
+        status: BookingStatus.upcoming,
+      ),
+      BookingItem(
+        id: '3',
+        restaurantName: 'Roadhouse Cafe',
+        location: 'Thamel, Kathmandu',
+        bookingId: 'BK-2409',
+        date: 'Dec 05, 2026',
+        time: '6:30 PM',
+        guests: 6,
+        status: BookingStatus.upcoming,
+      ),
+      BookingItem(
+        id: '4',
+        restaurantName: 'Bao Basera',
+        location: 'Jhamsikhet, Lalitpur',
+        bookingId: 'BK-2390',
+        date: 'Nov 20, 2026',
+        time: '7:30 PM',
+        guests: 2,
+        status: BookingStatus.completed,
+      ),
+      BookingItem(
+        id: '5',
+        restaurantName: 'The Old House',
+        location: 'Durbar Marg, Kathmandu',
+        bookingId: 'BK-2385',
+        date: 'Nov 15, 2026',
+        time: '8:00 PM',
+        guests: 4,
+        status: BookingStatus.completed,
+      ),
+      BookingItem(
+        id: '6',
+        restaurantName: 'Kaiser Cafe',
+        location: 'Garden of Dreams, Thamel',
+        bookingId: 'BK-2371',
+        date: 'Nov 10, 2026',
+        time: '1:00 PM',
+        guests: 2,
+        status: BookingStatus.completed,
+      ),
+      BookingItem(
+        id: '7',
+        restaurantName: 'Krishnarpan',
+        location: 'Battisputali, Kathmandu',
+        bookingId: 'BK-2362',
+        date: 'Nov 02, 2026',
+        time: '7:00 PM',
+        guests: 5,
+        status: BookingStatus.completed,
+      ),
+      BookingItem(
+        id: '8',
+        restaurantName: 'Attic Bar',
+        location: 'Lazimpat, Kathmandu',
+        bookingId: 'BK-2350',
+        date: 'Oct 28, 2026',
+        time: '8:30 PM',
+        guests: 3,
+        status: BookingStatus.completed,
+      ),
+      BookingItem(
+        id: '9',
+        restaurantName: 'Fire and Ice Pizzeria',
+        location: 'Thamel, Kathmandu',
+        bookingId: 'BK-2340',
+        date: 'Oct 18, 2026',
+        time: '6:00 PM',
+        guests: 4,
+        status: BookingStatus.cancelled,
+      ),
+      BookingItem(
+        id: '10',
+        restaurantName: 'Mezze by Roadhouse',
+        location: 'Durbar Marg, Kathmandu',
+        bookingId: 'BK-2331',
+        date: 'Oct 12, 2026',
+        time: '7:30 PM',
+        guests: 2,
+        status: BookingStatus.cancelled,
+      ),
+    ];
+
+    _sampleSaved = [
+      SavedRestaurant(
+        id: '1',
+        name: 'Bao Basera',
+        cuisine: 'Asian Fusion',
+        location: 'Jhamsikhet',
+        distance: '1.2 km',
+        rating: 4.8,
+        reviewCount: 142,
+        priceForTwo: 'Rs. 1,200 for two',
+        availabilityText: 'Tables available',
+        category: 'Fine Dining',
+      ),
+      SavedRestaurant(
+        id: '2',
+        name: 'Roadhouse Cafe',
+        cuisine: 'Italian & Pizza',
+        location: 'Thamel',
+        distance: '2.5 km',
+        rating: 4.7,
+        reviewCount: 210,
+        priceForTwo: 'Rs. 1,500 for two',
+        availabilityText: '3 tables left',
+        category: 'Cafes',
+      ),
+      SavedRestaurant(
+        id: '3',
+        name: 'The Old House',
+        cuisine: 'French & Continental',
+        location: 'Durbar Marg',
+        distance: '3.1 km',
+        rating: 4.9,
+        reviewCount: 98,
+        priceForTwo: 'Rs. 2,800 for two',
+        availabilityText: 'Tables available',
+        category: 'Fine Dining',
+      ),
+      SavedRestaurant(
+        id: '4',
+        name: 'Himalayan Java',
+        cuisine: 'Coffee & Bakery',
+        location: 'Patan Durbar',
+        distance: '0.8 km',
+        rating: 4.6,
+        reviewCount: 320,
+        priceForTwo: 'Rs. 800 for two',
+        availabilityText: 'Tables available',
+        category: 'Cafes',
+      ),
+      SavedRestaurant(
+        id: '5',
+        name: 'Bhojan Griha',
+        cuisine: 'Authentic Newari',
+        location: 'Dilli Bazar',
+        distance: '2.0 km',
+        rating: 4.8,
+        reviewCount: 180,
+        priceForTwo: 'Rs. 2,200 for two',
+        availabilityText: '2 tables left',
+        category: 'Family',
+      ),
+    ];
+
+    _sampleReviews = [
+      ReviewItem(
+        id: '1',
+        restaurantName: 'Roadhouse Cafe',
+        date: '2 days ago',
+        rating: 5.0,
+        text: 'Best wood-fired pizza in Kathmandu! Great ambiance and polite staff.',
+      ),
+      ReviewItem(
+        id: '2',
+        restaurantName: 'Bao Basera',
+        date: '1 week ago',
+        rating: 4.5,
+        text: 'Delicious pork bao buns and ramen. Booking with Boo-KAA saved us 30 mins wait.',
+      ),
+      ReviewItem(
+        id: '3',
+        restaurantName: 'The Old House',
+        date: '2 weeks ago',
+        rating: 4.5,
+        text: 'Beautiful courtyards and exquisite French cuisine. Perfect anniversary dinner.',
+      ),
+    ];
+  }
 
   void _showSnackBar(String message) {
     ScaffoldMessenger.of(context).clearSnackBars();
@@ -54,6 +262,78 @@ class _ProfileScreenState extends State<ProfileScreen> {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         duration: const Duration(seconds: 2),
+      ),
+    );
+  }
+
+  void _openAvatarPickerModal() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) => AvatarPickerSheet(
+        hasCurrentPhoto: _profilePhotoFile != null,
+        onPhotoSelected: (file) {
+          setState(() => _profilePhotoFile = file);
+          _showSnackBar('Profile photo updated');
+        },
+        onPhotoRemoved: () {
+          setState(() => _profilePhotoFile = null);
+          _showSnackBar('Photo removed');
+        },
+        onError: (err) => _showSnackBar(err),
+      ),
+    );
+  }
+
+  void _navigateToBookings() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BookingsPage(
+          initialBookings: _sampleBookings,
+          onBookingsUpdated: (updatedList) {
+            setState(() {
+              _sampleBookings = updatedList;
+            });
+          },
+          onReviewAdded: (newReview) {
+            setState(() {
+              _sampleReviews.insert(0, newReview);
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  void _navigateToSaved() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => SavedPage(
+          initialSavedList: _sampleSaved,
+          onListUpdated: (updatedList) {
+            setState(() {
+              _sampleSaved = updatedList;
+            });
+          },
+        ),
+      ),
+    );
+  }
+
+  void _navigateToReviews() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => ReviewsPage(
+          initialReviews: _sampleReviews,
+          onReviewsUpdated: (updatedList) {
+            setState(() {
+              _sampleReviews = updatedList;
+            });
+          },
+        ),
       ),
     );
   }
@@ -85,9 +365,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (ctx) => BudgetBottomSheet(
         initialValues: _budgetRange,
         onSave: (newRange) {
-          setState(() {
-            _budgetRange = newRange;
-          });
+          setState(() => _budgetRange = newRange);
           _showSnackBar('Preferences updated');
         },
       ),
@@ -102,9 +380,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
       builder: (ctx) => CuisineBottomSheet(
         initialSelected: _favoriteCuisines,
         onSave: (newList) {
-          setState(() {
-            _favoriteCuisines = newList;
-          });
+          setState(() => _favoriteCuisines = newList);
           _showSnackBar('Preferences updated');
         },
       ),
@@ -197,20 +473,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
         ),
         content: Text(
           'Are you sure you want to log out of Boo-KAA?',
-          style: AppTheme.inter(
-            fontSize: 14,
-            color: AppColors.textCharcoal,
-          ),
+          style: AppTheme.inter(fontSize: 14, color: AppColors.textCharcoal),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.pop(ctx),
             child: Text(
               'Cancel',
-              style: AppTheme.inter(
-                fontWeight: FontWeight.w600,
-                color: AppColors.mutedGray,
-              ),
+              style: AppTheme.inter(fontWeight: FontWeight.w600, color: AppColors.mutedGray),
             ),
           ),
           ElevatedButton(
@@ -226,16 +496,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
               backgroundColor: const Color(0xFFD32F2F),
               foregroundColor: AppColors.white,
               elevation: 0,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(14),
-              ),
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
             ),
             child: Text(
               'Log Out',
-              style: AppTheme.inter(
-                fontWeight: FontWeight.w700,
-                color: AppColors.white,
-              ),
+              style: AppTheme.inter(fontWeight: FontWeight.w700, color: AppColors.white),
             ),
           ),
         ],
@@ -246,9 +511,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final budgetText = 'Rs. ${_budgetRange.start.round()} - ${_budgetRange.end.round()}';
-    final cuisineText = _favoriteCuisines.isEmpty
-        ? 'None selected'
-        : _favoriteCuisines.join(', ');
+    final cuisineText = _favoriteCuisines.isEmpty ? 'None selected' : _favoriteCuisines.join(', ');
+
+    // Live counts
+    final bookingsCount = _sampleBookings.where((b) => b.status != BookingStatus.cancelled).length;
+    final savedCount = _sampleSaved.length;
+    final reviewsCount = _sampleReviews.length;
 
     return Scaffold(
       backgroundColor: AppColors.bgCream,
@@ -271,7 +539,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1. Header Section
+                // 1. Eyebrow & Title
                 Text(
                   'YOUR SPACE',
                   style: AppTheme.inter(
@@ -293,13 +561,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 ),
                 const SizedBox(height: 20),
 
-                // 2. Profile Header Card
+                // 2. Profile Card with Camera Badge & Avatar
                 ProfileHeaderCard(
                   name: _userName,
                   email: _userEmail,
                   memberSince: _memberSince,
+                  photoFile: _profilePhotoFile,
                   onEditPressed: _openEditProfileModal,
-                  onAvatarPressed: () => _showSnackBar('Coming soon'),
+                  onAvatarPressed: _openAvatarPickerModal,
                 ),
                 const SizedBox(height: 20),
 
@@ -308,23 +577,23 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   children: [
                     StatCard(
                       label: 'Bookings',
-                      value: '$_bookingsCount',
+                      value: '$bookingsCount',
                       icon: Icons.calendar_today_rounded,
-                      onTap: () => _showSnackBar('Coming soon'),
+                      onTap: _navigateToBookings,
                     ),
                     const SizedBox(width: 12),
                     StatCard(
                       label: 'Saved',
-                      value: '$_savedCount',
+                      value: '$savedCount',
                       icon: Icons.bookmark_border_rounded,
-                      onTap: () => _showSnackBar('Coming soon'),
+                      onTap: _navigateToSaved,
                     ),
                     const SizedBox(width: 12),
                     StatCard(
                       label: 'Reviews',
-                      value: '$_reviewsCount',
+                      value: '$reviewsCount',
                       icon: Icons.star_border_rounded,
-                      onTap: () => _showSnackBar('Coming soon'),
+                      onTap: _navigateToReviews,
                     ),
                   ],
                 ),
@@ -334,10 +603,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 const SectionHeader(title: 'Dining Preferences'),
                 Text(
                   'Used by Boo-KAA AI to suggest places for you.',
-                  style: AppTheme.inter(
-                    fontSize: 13,
-                    color: AppColors.mutedGray,
-                  ),
+                  style: AppTheme.inter(fontSize: 13, color: AppColors.mutedGray),
                 ),
                 const SizedBox(height: 12),
                 Container(
@@ -371,7 +637,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             : cuisineText,
                         onTap: _openCuisineModal,
                       ),
-                      // Group size stepper tile
+                      // Stepper for default group size
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                         child: Row(
@@ -507,12 +773,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       SettingsTile(
                         icon: Icons.bookmark_outline_rounded,
                         title: 'Saved restaurants',
-                        onTap: () => _showSnackBar('Coming soon'),
+                        onTap: _navigateToSaved,
                       ),
                       SettingsTile(
                         icon: Icons.history_rounded,
                         title: 'Booking history',
-                        onTap: () => _showSnackBar('Coming soon'),
+                        onTap: _navigateToBookings,
                       ),
                       SettingsTile(
                         icon: Icons.payment_outlined,
