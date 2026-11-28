@@ -66,5 +66,13 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>NSCameraUsageDescription</key>
+	<string>Boo-KAA requires camera access to allow you to take a profile photo.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Boo-KAA requires photo library access to allow you to select a profile photo.</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>https</string>
+	</array>
 </dict>
 </plist>

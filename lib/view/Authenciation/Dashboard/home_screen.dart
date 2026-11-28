@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../Widgets/app_theme.dart';
 import 'ai_recommendation_screen.dart';
+import '../Profile/profile_screen.dart';
 
 // =============================================================================
 // RESTAURANT DATA MODEL
@@ -87,7 +88,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: SafeArea(
         child: _selectedIndex == 0
             ? _buildHomeBody()
-            : _buildPlaceholderTab(['Home', 'Explore', 'My Bookings', 'Profile'][_selectedIndex]),
+            : _selectedIndex == 3
+                ? const ProfileScreen()
+                : _buildPlaceholderTab(['Home', 'Explore', 'My Bookings', 'Profile'][_selectedIndex]),
       ),
       bottomNavigationBar: Container(
         decoration: const BoxDecoration(
