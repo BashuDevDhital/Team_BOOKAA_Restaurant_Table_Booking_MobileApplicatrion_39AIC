@@ -61,7 +61,8 @@ class AiRecommendationScreen extends StatefulWidget {
 }
 
 class _AiRecommendationScreenState extends State<AiRecommendationScreen> {
-  // Gemini API key provided by user
+  // Safe API key placeholder (keeps git secure)
+  static const String _geminiApiKey = '';
 
   final TextEditingController _controller = TextEditingController();
   final ScrollController _scrollController = ScrollController();
