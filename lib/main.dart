@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'book_table_screen.dart';
+import 'explore_screen.dart';
 
 void main() => runApp(const BookingApp());
 
@@ -69,7 +71,7 @@ final List<Booking> sampleBookings = [
   ),
   Booking(
     restaurant: 'Caravan Bankside',
-    imageAsset: 'assets/images/img.png',
+    imageAsset: 'assets/images/img_1.png',
     status: BookingStatus.completed,
     dateTime: DateTime(2026, 10, 12, 20, 15),
     guests: 4,
@@ -99,7 +101,7 @@ class HomeShell extends StatefulWidget {
 }
 
 class _HomeShellState extends State<HomeShell> {
-  int _index = 1; // Bookings tab
+  int _index = 0; // Bookings tab
 
   @override
   Widget build(BuildContext context) {
@@ -108,10 +110,12 @@ class _HomeShellState extends State<HomeShell> {
         child: IndexedStack(
           index: _index,
           children: const [
-            Center(child: Text('Explore')),
+            ExploreScreen(),
             MyBookingsScreen(),
             Center(child: Text('Profile')),
           ],
+
+
         ),
       ),
       bottomNavigationBar: NavigationBarTheme(
