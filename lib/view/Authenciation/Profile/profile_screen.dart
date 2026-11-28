@@ -36,7 +36,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
   bool _isVegetarianFriendly = false;
   RangeValues _budgetRange = const RangeValues(500, 2500);
   List<String> _favoriteCuisines = ['Nepali', 'Newari', 'Asian'];
-  int _defaultGroupSize = 2;
 
   // Notifications State
   bool _tableReadyAlerts = true;
@@ -423,32 +422,25 @@ class _ProfileScreenState extends State<ProfileScreen> {
             const SizedBox(height: 16),
             ListTile(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              tileColor: _selectedLanguage == 'English' ? AppColors.softCreamCard : AppColors.white,
+              tileColor: AppColors.softCreamCard,
               title: Text('English', style: AppTheme.inter(fontWeight: FontWeight.w600)),
-              trailing: _selectedLanguage == 'English'
-                  ? const Icon(Icons.check_circle_rounded, color: AppColors.primaryOrange)
-                  : null,
+              trailing: const Icon(Icons.check_circle_rounded, color: AppColors.primaryOrange),
               onTap: () {
                 HapticFeedback.selectionClick();
-                setState(() => _selectedLanguage = 'English');
                 Navigator.pop(ctx);
-                _showSnackBar('Language set to English');
               },
             ),
-            const SizedBox(height: 8),
-            ListTile(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              tileColor: _selectedLanguage == 'Nepali' ? AppColors.softCreamCard : AppColors.white,
-              title: Text('नेपाली (Nepali)', style: AppTheme.inter(fontWeight: FontWeight.w600)),
-              trailing: _selectedLanguage == 'Nepali'
-                  ? const Icon(Icons.check_circle_rounded, color: AppColors.primaryOrange)
-                  : null,
-              onTap: () {
-                HapticFeedback.selectionClick();
-                setState(() => _selectedLanguage = 'Nepali');
-                Navigator.pop(ctx);
-                _showSnackBar('Language set to Nepali');
-              },
+            const SizedBox(height: 12),
+            Padding(
+              padding: const EdgeInsets.only(left: 4),
+              child: Text(
+                'More languages will be added later.',
+                style: AppTheme.inter(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w400,
+                  color: AppColors.mutedGray,
+                ),
+              ),
             ),
             const SizedBox(height: 12),
           ],
@@ -635,85 +627,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         valueText: cuisineText.length > 20
                             ? '${cuisineText.substring(0, 18)}...'
                             : cuisineText,
+                        showDivider: false,
                         onTap: _openCuisineModal,
-                      ),
-                      // Stepper for default group size
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-                        child: Row(
-                          children: [
-                            Container(
-                              width: 36,
-                              height: 36,
-                              decoration: const BoxDecoration(
-                                color: AppColors.bgCream,
-                                shape: BoxShape.circle,
-                              ),
-                              child: const Icon(
-                                Icons.group_outlined,
-                                size: 20,
-                                color: AppColors.burntOrange,
-                              ),
-                            ),
-                            const SizedBox(width: 14),
-                            Expanded(
-                              child: Text(
-                                'Default group size',
-                                style: AppTheme.inter(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: AppColors.textCharcoal,
-                                ),
-                              ),
-                            ),
-                            Container(
-                              decoration: BoxDecoration(
-                                color: AppColors.softCreamCard,
-                                borderRadius: BorderRadius.circular(16),
-                                border: Border.all(color: AppColors.inputBorder),
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  IconButton(
-                                    visualDensity: VisualDensity.compact,
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                                    icon: const Icon(Icons.remove, size: 18, color: AppColors.textCharcoal),
-                                    onPressed: _defaultGroupSize > 1
-                                        ? () {
-                                            HapticFeedback.selectionClick();
-                                            setState(() => _defaultGroupSize--);
-                                            _showSnackBar('Preferences updated');
-                                          }
-                                        : null,
-                                  ),
-                                  Text(
-                                    '$_defaultGroupSize',
-                                    style: AppTheme.dmSans(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.w800,
-                                      color: AppColors.burntOrange,
-                                    ),
-                                  ),
-                                  IconButton(
-                                    visualDensity: VisualDensity.compact,
-                                    padding: EdgeInsets.zero,
-                                    constraints: const BoxConstraints(minWidth: 36, minHeight: 36),
-                                    icon: const Icon(Icons.add, size: 18, color: AppColors.textCharcoal),
-                                    onPressed: _defaultGroupSize < 20
-                                        ? () {
-                                            HapticFeedback.selectionClick();
-                                            setState(() => _defaultGroupSize++);
-                                            _showSnackBar('Preferences updated');
-                                          }
-                                        : null,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
                       ),
                     ],
                   ),

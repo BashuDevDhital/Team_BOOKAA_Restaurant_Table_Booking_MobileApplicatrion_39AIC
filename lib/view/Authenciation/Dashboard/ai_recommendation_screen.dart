@@ -148,6 +148,8 @@ class _AiRecommendationScreenState extends State<AiRecommendationScreen> {
     _initializeGemini();
   }
 
+  static const String _geminiApiKey = 'YOUR_GEMINI_API_KEY';
+
   void _initializeGemini() {
     try {
       final model = GenerativeModel(
